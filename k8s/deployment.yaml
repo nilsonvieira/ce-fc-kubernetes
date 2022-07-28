@@ -16,23 +16,10 @@ spec:
       spec:
         containers:
         - name: "goserver"
-          image: nilsonrsvieira/hello-go:v4
-          # env:
-          #   - name: NAME
-          #     value: "Nilson Vieira"
-          #   - name: AGE
-          #     value: "33"
-          # env:
-          #   - name: NAME
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: goserver-env
-          #         key: NAME
-          #   - name: AGE
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: goserver-env
-          #         key: AGE
+          image: nilsonrsvieira/hello-go:v5.1
+          volumeMounts:
+            - mountPath: "/go/src/goapp/myfamily"
+              name: config
           envFrom:
             - configMapRef:
                 name: goserver-env
@@ -42,3 +29,10 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 8080
+        volumes:
+          - name: config
+            configMap:
+              name: configmap-family
+              items:
+              - key: members
+                path: family.txt
