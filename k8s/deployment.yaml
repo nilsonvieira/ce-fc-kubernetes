@@ -16,7 +16,20 @@ spec:
       spec:
         containers:
         - name: "goserver"
-          image: nilsonrsvieira/hello-go:v5.3
+          image: nilsonrsvieira/hello-go:v5.4
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 3
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 3
+            failureThreshold: 1
+            timeoutSeconds: 1
           livenessProbe:
             httpGet:
               path: /healthz
