@@ -16,13 +16,23 @@ spec:
       spec:
         containers:
         - name: "goserver"
-          image: nilsonrsvieira/hello-go:v5.1
+          image: nilsonrsvieira/hello-go:v5.3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 1
+            timeoutSeconds: 1
+            successThreshold: 1
           volumeMounts:
             - mountPath: "/go/src/goapp/myfamily"
               name: config
           envFrom:
             - configMapRef:
                 name: goserver-env
+            - secretRef:
+                name: goserver-secret
           resources:
             limits:
               memory: "128Mi"
