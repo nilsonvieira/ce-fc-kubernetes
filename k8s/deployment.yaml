@@ -17,6 +17,13 @@ spec:
         containers:
         - name: "goserver"
           image: nilsonrsvieira/hello-go:v5.4
+          resources:
+            requests: # Minimo para Rodar
+             cpu: 100m
+             memory: 20Mi
+            limits:
+              cpu: 500m
+              memory: 25Mi
           startupProbe:
             httpGet:
               path: /healthz
