@@ -48,18 +48,23 @@ spec:
           volumeMounts:
             - mountPath: "/go/src/goapp/myfamily"
               name: config
+            - mountPath: "/go/pvc"
+              name: goserver-volume
           envFrom:
             - configMapRef:
                 name: goserver-env
             - secretRef:
                 name: goserver-secret
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+          # resources:
+          #   limits:
+          #     memory: "128Mi"
+          #     cpu: "500m"
           ports:
             - containerPort: 8080
         volumes:
+          - name: goserver-volume
+            persistentVolumeClaim:
+              claimName: goserver-pvc
           - name: config
             configMap:
               name: configmap-family
