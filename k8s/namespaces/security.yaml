@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: server
+
+---
+apiVersion: rbac.autorization.k8s.io/v1
+kind: role
+metadata:
+  name: server-read
+rules:
+  - apiGroups: [""]
+    resouces: ["pods","services"]
+    verbs: ["get","watch", "list"]
+  - apiGroups: ["apps"]
+    resouces: ["deployments"]
+    verbs: ["get","watch", "list"]
+
+---
+apiVersion: rbac.autorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: server-read-bind
+subjects:
+- kind: ServiceAccount
+  name: server
+  namespace: prod
+roleRef:
+  kind: Role
+  name: server-read
+  apiGroup: rbac.autorization.k8s.io
